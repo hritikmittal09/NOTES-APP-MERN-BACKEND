@@ -6,6 +6,6 @@ const user_schma = new  mongoose .Schema(
 
     }
 )
-const user =mongoose.model("32", user_schma)
+const user =mongoose.model("user", user_schma)
 
 module.exports =  user

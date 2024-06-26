@@ -17,7 +17,7 @@ route.post("/create", fetch_user, (req, res) => {
   new_note
     .save()
     .then(() => {
-      res.send("save sucssfully");
+      res.send(new_note);
     })
     .catch((e) => res.send("something went wrong"));
 });

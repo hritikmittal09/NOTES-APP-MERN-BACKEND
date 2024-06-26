@@ -3,6 +3,10 @@ const body_parser = require("body-parser")
 const port = 80
 const express = require("express")
 const app = express()
+var cors = require('cors')
+
+
+app.use(cors())
 app.use(express.json())
 app.use(body_parser.urlencoded({ extended: false }))
 // avaliable routes
@@ -13,6 +17,8 @@ app.get("/",(req,res)=>{
     res.send("server is working");
 
 })
+
+
 app.listen(port,()=>{
     try{
     connectToDB()

@@ -37,7 +37,7 @@ route.post("/create", async (req, res) => {
         }
         const jwt_token = jwt.sign(data,jwt_secret_key)
         
-        res.status(201).json({ message: "user created successfully" , "token": jwt_token});
+        res.status(201).json({ exist: false , "token": jwt_token});
       })
       .catch((error) => {
         if (
@@ -46,13 +46,13 @@ route.post("/create", async (req, res) => {
           error.keyPattern.email === 1
         ) {
           // Duplicate key error, email is already taken
-          res.status(400).json({ error: "Email already exists." });
+          res.status(400).json({ error: "Email already exists.",exist : true });
         }
       });
   }
 });
-route.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+route.post("/login",  async (req, res) => {
+  let { email, password } = req.body;
   if (email == "" || password.length < 5) {
     res.status(400).json({ message: "bad request" });
   } else {
@@ -62,19 +62,20 @@ route.post("/login", async (req, res) => {
         res
           .status(400)
           .json({ message: "wrong credentials try agin", Login: 0 });
+          return
       }
       const comparePass = await bcrypt.compare(password, login_user.password);
-      if (!comparePass) {
+       if (!comparePass) {
         res
           .status(400)
           .json({ message: "wrong credentials try agin", login: 0 });
       } else {
         const data = {User:{id: login_user.id}}
         const token = jwt.sign(data,jwt_secret_key)
-        res.json({ message: "Login successful","token": token });
+        res.json({ message: 1,"token": token });
       }
     } catch (error) {
-      res.json({ message: "someting went wrong " });
+      console.log(error)
     }
   }
 });
